@@ -26,9 +26,24 @@ cd llvm
 
 mkdir build && cd  build
 
-export  LLVM_VORTEX="USER DEFINED DIRECTORY"
-
-cmake -G "Unix Makefiles"  -DLLVM_ABI_BREAKING_CHECKS=FORCE_OFF  -DLLVM_INCLUDE_EXAMPLES=OFF  -DLLVM_INCLUDE_TESTS=OFF  -DCMAKE_BUILD_TYPE=Release  -DLLVM_ENABLE_PROJECTS="clang"  -DCMAKE_INSTALL_PREFIX=$LLVM_VORTEX  -DDEFAULT_SYSROOT=$RISCV_TOOLCHAIN_PATH/riscv32-unknown-elf  -DLLVM_DEFAULT_TARGET_TRIPLE="riscv32-unknown-elf"  -DLLVM_TARGETS_TO_BUILD="X86;RISCV;NVPTX"  ../llvm
+export LLVM_VORTEX="/home/bodhi/Projects/vortexgpgpu/build/llvm"
+N_JOBS=8
+CC=clang
+CXX=clang++
+cmake -G "Unix Makefiles" \
+    -DLLVM_ABI_BREAKING_CHECKS=FORCE_OFF \
+    -DLLVM_INCLUDE_EXAMPLES=OFF \
+    -DLLVM_INCLUDE_TESTS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_ENABLE_PROJECTS="clang;llvm;mlir;lld;" \
+    -DCMAKE_INSTALL_PREFIX=$LLVM_VORTEX \
+    -DDEFAULT_SYSROOT=$RISCV_TOOLCHAIN_PATH/riscv32-unknown-elf \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="riscv32-unknown-elf" \
+    -DLLVM_TARGETS_TO_BUILD="X86;RISCV;NVPTX" \
+    -DLLVM_PARALLEL_COMPILE_JOBS=$N_JOBS \
+    -DLLVM_PARALLEL_LINK_JOBS=$N_JOBS \
+    -DLLVM_PARALLEL_TABLEGEN_JOBS=$N_JOBS \
+    ../llvm
 
 make -j`nproc`
 
@@ -94,12 +109,11 @@ sh cuda_12.1.1_530.30.02_linux.run --silent --toolkit --toolkitpath=$CuPBoP_PATH
 
   
 
-Use the CuPBoP_env_setup.sh file to set up the environment variables:
-If you're planning to use Cuda only (not OpenCL), you can execute CuPBoP_env_setup_wo_PoCL.sh.
+Use the CuPBoP_env_setup_wo_PoCL.sh file to set up the environment variables:
 
 ```bash
 
-$CuPBoP_PATH/CuPBoP_env_setup.sh
+$CuPBoP_PATH/CuPBoP_env_setup_wo_PoCL.sh
 
 ```
 

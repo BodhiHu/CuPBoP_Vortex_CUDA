@@ -47,6 +47,7 @@ CMakeCache.txt
 
 # exclude folders
 /cuda-12.1/**
+build*
 /build/**
 /runtime/threadPool/include/
 /include/

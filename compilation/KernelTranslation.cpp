@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 
   // inline, and create auxiliary global variables
   std::cout << "init_block\n" << std::flush;
-  printIR(program);
+  // printIR(program);
   init_block(program, fout);
 
   dumpFile(program, "0.ll");
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
   
   // VerifyModule(program);
   std::cout << "insert_warp_loop\n" << std::flush;
-  printIR(program);
+  // printIR(program);
   insert_warp_loop(program);
 
   //dumpFile(program, "5.ll");
@@ -97,9 +97,22 @@ int main(int argc, char **argv) {
 
   //dumpFile(program, "6.ll");
   VerifyModule(program);
-  std::cout << "generate\n" << std::flush;
+  std::cout << ">>> generate\n" << std::flush;
   //printIR(program);
+  try {
   generate_wrapper(program);
+  }
+  catch (const std::exception& e) {
+      std::cerr << "Exception caught: " << e.what() << std::endl;
+      // print_stacktrace();
+      return -1;
+  }
+  catch (...) {
+      std::cerr << "Unknown exception caught!" << std::endl;
+      // print_stacktrace();
+      return -1;
+  }
+
   //dumpFile(program, "7.ll");
   // VerifyModule(program);
   std::cout << "performance opt\n" << std::flush;

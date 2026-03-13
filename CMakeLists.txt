@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -g -O0 -DDEBUG -rdynamic -fexceptions")
+set(CMAKE_C_FLAGS    "${CMAKE_CXX_FLAGS} -g -O0 -DDEBUG -rdynamic -fexceptions")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rdynamic")
+
 project(CudaOnX86)
 set(CMAKE_PROJECT_DESCRIPTION "Executing CUDA on X86 architecture.")
 set(CMAKE_CXX_STANDARD 17)

@@ -1,3 +1,13 @@
+
+source ../vortex/build/ci/toolchain_env.sh
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+export VORTEX_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export LLVM_VORTEX="$VORTEX_HOME/llvm/build"
+export CuPBoP_PATH="$SCRIPT_DIR"
+export VORTEX_PATH="$VORTEX_HOME/vortex/build"
+
 ########## USER DEFINED VARIABLES ##########
 export VORTEX_ARCHITECTURE=64     #(32 or 64)
 export VORTEX_SCHEDULE_FLAG=2     #(0(TM) or 1(CM) or 2(1:1 mapping, default)
@@ -42,23 +52,20 @@ else
 fi
 
 export VORTEX_DRIVER_INC=$VORTEX_HOME/runtime/include
-export VORTEX_DRIVER_LIB=$VORTEX_HOME/runtime/stub/libvortex.so
+export VORTEX_DRIVER_LIB=$VORTEX_PATH/runtime/libvortex.so
 
 export LLVM_PREFIX=${LLVM_VORTEX}
-export LLVM_POCL=${LLVM_VORTEX}
+export PATH="$LLVM_PREFIX/bin:$PATH"
 
 export VERILATOR_ROOT=${TOOLDIR}/verilator
 export SV2V_PATH=$TOOLDIR/sv2v
 export YOSYS_PATH=$TOOLDIR/yosys
 export PATH=$YOSYS_PATH/bin:$SV2V_PATH/bin:$VERILATOR_ROOT/bin:$PATH
-export LD_LIBRARY_PATH=${GNU_RISCV_ROOT}:$LD_LIBRARY_PATH
 
-# For CuPBoP
-export LLVM_PATH=${LLVM_VORTEX}
-export PATH=$LLVM_PATH/bin:$PATH
-
-export LD_LIBRARY_PATH=$CuPBoP_PATH/build/runtime:$CuPBoP_PATH/build/runtime/threadPool:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$CuPBoP_PATH/cuda-12.1/lib64:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=${LLVM_VORTEX}/lib:${LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH=${VORTEX_PATH}/runtime/:${LD_LIBRARY_PATH}
 export CUDA_PATH=$CuPBoP_PATH/cuda-12.1
+export PATH="$CUDA_PATH:$PATH"
+
+export LD_LIBRARY_PATH="${GNU_RISCV_ROOT}:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="${VORTEX_PATH}/runtime:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="${CuPBoP_PATH}/build/runtime:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="${CuPBoP_PATH}/build/runtime/threadPool:$LD_LIBRARY_PATH"
